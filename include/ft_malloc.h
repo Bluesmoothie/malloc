@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include "libft.h"
+#include "ft_printf.h"
 
 #define TINYMALLOC		10
 #define SMALLMALLOC		(TINYMALLOC * 10)

@@ -1,4 +1,4 @@
-.PHONY				:	clean fclean re all debug leaks check
+.PHONY				:	clean fclean re all debug leaks check FORCE
 
 ifeq ($(HOSTTYPE),)
 HOSTTYPE 			:= $(shell uname -m)_$(shell uname -s)
@@ -12,6 +12,7 @@ MODE 				?= 	release
 
 CC					=	cc
 CFLAGS				=	-Wall -Wextra -Werror -MMD -MP -fPIC $(INCLUDE)
+LIBSFLAGS			=	-L$(LIBFT) -lft_ex
 
 ifeq ($(MODE), debug)
 	CFLAGS			= 	-Wall -Wextra -MMD -MP -fPIC $(INCLUDE) -g3 -DDEBUG
@@ -22,11 +23,16 @@ endif
 CLANG-TIDY			=	clang-tidy-12
 CLANG-TIDY_CHECKS	=	-checks='-*,bugprone-*,cert-*,cppcoreguidelines-*,modernize-*,readability-*'
 
+#			LIBFT
+
+LIBFT				=	libft
+LIBFT_A				=	$(LIBFT)/libft_ex.a
+
 #			COMMON
 
 BUILD_DIR			=	.build/
 SRC_DIR				=	./src/
-INCLUDE 			=	-Iinclude/
+INCLUDE 			=	-Iinclude/ -I$(LIBFT)/include/
 
 #			SRC
 
@@ -52,22 +58,29 @@ leaks				:
 check				:
 					$(CLANG-TIDY) $(SRC) $(CLANG-TIDY_CHECKS) -- $(INCLUDE)
 
-$(NAME)				:	$(BUILD_DIR) $(OBJ)
-					$(CC) -shared -o $(NAME) $(OBJ)
+$(NAME)				:	$(BUILD_DIR) $(OBJ) $(LIBFT_A)
+					$(CC) $(LIBSFLAGS) -shared -o $(NAME) $(OBJ)
 					ln -s $(NAME) $(LNNAME)
 
 $(BUILD_DIR)		:
 					mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)%.o		: 	$(SRC_DIR)%.cpp
+$(BUILD_DIR)%.o		: 	$(SRC_DIR)%.c
 					$(CC) $(CFLAGS) -c $< -o $@
 
 -include $(DEPS)
 
+$(LIBFT_A)			:	FORCE
+					$(MAKE) -C $(LIBFT)
+
+FORCE				:
+
 clean				:
 					rm -rf $(BUILD_DIR)
+					$(MAKE) clean -C $(LIBFT)
 
 fclean				:	clean
 					rm -f $(NAME)
+					$(MAKE) fclean -C $(LIBFT)
 
 re					:	fclean all

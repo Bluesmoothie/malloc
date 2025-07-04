@@ -1,0 +1,3 @@
+.build/
+.vscode/
+libft_malloc*.so
