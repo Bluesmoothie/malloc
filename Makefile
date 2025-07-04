@@ -39,6 +39,7 @@ INCLUDE 			=	-Iinclude/ -I$(LIBFT)/include/
 VPATH				=
 
 SRC_FILES			=	main			\
+						internal		\
 
 SRC 				= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 				= 	$(addprefix $(BUILD_DIR), $(addsuffix .o, $(SRC_FILES)))

@@ -1,3 +1,5 @@
 .build/
 .vscode/
 libft_malloc*.so
+tests.c
+a.out
