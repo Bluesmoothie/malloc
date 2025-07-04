@@ -5,45 +5,28 @@
 #include "libft.h"
 #include "ft_printf.h"
 
-#define ZONESIZE		100
+#define	ZONE_MIN	100
 
-#define TINYMALLOC		8
-#define SMALLMALLOC		(TINYMALLOC * 8)
+typedef	unsigned char 	t_param;
 
-#define TINYMALLOCZONE	(TINYMALLOC * ZONESIZE)
-#define SMALLMALLOCZONE	(SMALLMALLOC * ZONESIZE)
-
-typedef	unsigned char 		t_param;
-
-typedef struct s_tinyZone 	t_tinyZone;
-typedef struct s_smallZone 	t_smallZone;
-typedef struct s_largeZone 	t_largeZone;
-
-typedef struct s_tinyZone
+typedef struct s_block
 {
-	void*			ptrs[ZONESIZE];
-	t_tinyZone*		next;
-}	t_tinyZone;
-
-typedef struct s_smallZone
-{
-	void*			ptrs[ZONESIZE];
-	t_smallZone*	next;
-}	t_smallZone;
-
-typedef struct s_largeZone
-{
-	void*			ptr;
-	t_largeZone*	next;
-}	t_largeZone;
+	t_bool	taken;
+	size_t	size;
+	void*	next;
+}	t_block;
 
 typedef struct s_context
 {
-	rlim_t			dataMax;
-	long			pageSize;
-	t_tinyZone		tinyZones;
-	t_smallZone		smallZones;
-	t_largeZone*	largeZones;
+	rlim_t		totalAllocated;
+	rlim_t		totalClaimed;
+	rlim_t		dataMax;
+	long		pageSize;
+	size_t		tinySize;
+	size_t		smallSize;
+	void*		tinyZones;
+	void*		smallZones;
+	void*		largeZones;
 }	t_context;
 
 enum	e_params

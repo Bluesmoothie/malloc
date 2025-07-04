@@ -39,12 +39,18 @@ static t_bool	init_malloc(t_context* ctx)
 		|| !rl.rlim_cur || !ctx->pageSize)
 		return (FALSE);
 	ctx->dataMax = rl.rlim_cur;
+
+	ctx->tinySize = ctx->pageSize;
+	while (ctx->tinySize < ZONE_MIN * BYTE)
+		ctx->tinySize += ctx->pageSize;
+	ctx->smallSize = ctx->tinySize * BYTE;
 	return (TRUE);
 }
 
 void	free_internal(void* ptr)
 {
-	(void) ptr;
+	if (!ptr)
+		return;
 	return;
 }
 
