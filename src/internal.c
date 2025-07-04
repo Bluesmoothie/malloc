@@ -1,5 +1,7 @@
 #include "ft_malloc.h"
 
+static t_bool	init_malloc(t_context* ctx);
+
 void	*ft_malloc_internal(t_param param, void *ptr, size_t size)
 {
 	static	t_context	ctx;
@@ -10,19 +12,26 @@ void	*ft_malloc_internal(t_param param, void *ptr, size_t size)
 	switch(param)
 	{
 		case	FREE:
+			free_internal(ptr);
+			return NULL;
 			break;
 		case	MALLOC:
+			return malloc_internal(size);
 			break;
 		case	REALLOC:
+			return realloc_internal(ptr, size);
 			break;
 		case	SHOW:
+			show_internal();
+			return NULL;
 			break;
 	}
+	return NULL;
 }
 
 //	Initialize infos needed for malloc
 //	Return TRUE on success
-t_bool	init_malloc(t_context* ctx)
+static t_bool	init_malloc(t_context* ctx)
 {
 	struct rlimit	rl;
 
@@ -31,4 +40,28 @@ t_bool	init_malloc(t_context* ctx)
 		return (FALSE);
 	ctx->dataMax = rl.rlim_cur;
 	return (TRUE);
+}
+
+void	free_internal(void* ptr)
+{
+	(void) ptr;
+	return;
+}
+
+void	*malloc_internal(size_t size)
+{
+	(void) size;
+	return NULL;
+}
+
+void	*realloc_internal(void* ptr, size_t size)
+{
+	(void) ptr;
+	(void) size;
+	return NULL;
+}
+
+void	show_internal(void)
+{
+	return;
 }

@@ -63,3 +63,7 @@ void	show_alloc_mem(void);
 
 //	internal.c
 void	*ft_malloc_internal(t_param param, void *ptr, size_t size);
+void	free_internal(void* ptr);
+void	*malloc_internal(size_t size);
+void	*realloc_internal(void* ptr, size_t size);
+void	show_internal(void);
