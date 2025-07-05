@@ -1,23 +1,34 @@
 #include "ft_malloc.h"
 
+static inline void	init(void);
+
+static t_context	ctx;
+
 void	free(void *ptr)
 {
-	ft_malloc_internal(FREE, ptr, 0);
+	init();
 	return;
 }
 
 void	*malloc(size_t size)
 {
-	return ft_malloc_internal(MALLOC, NULL, size);
+	init();
+	return NULL;
 }
 
 void	*realloc(void *ptr, size_t size)
 {
-	return ft_malloc_internal(REALLOC, ptr, size);
+	init();
+	return NULL;
 }
 
 void	show_alloc_mem(void)
 {
-	ft_malloc_internal(SHOW, NULL, 0);
 	return;
+}
+
+static inline void	init(void)
+{
+	if (!ctx.init)
+		init_malloc(&ctx);
 }
