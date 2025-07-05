@@ -12,7 +12,7 @@ MODE 				?= 	release
 
 CC					=	cc
 CFLAGS				=	-Wall -Wextra -Werror -MMD -MP -fPIC $(INCLUDE)
-LIBSFLAGS			=	-L$(LIBFT) -lft_ex
+LIBSFLAGS			=	-L./ -lft
 
 ifeq ($(MODE), debug)
 	CFLAGS			= 	-Wall -Wextra -MMD -MP -fPIC $(INCLUDE) -g3 -DDEBUG
@@ -26,7 +26,7 @@ CLANG-TIDY_CHECKS	=	-checks='-*,bugprone-*,cert-*,cppcoreguidelines-*,modernize-
 #			LIBFT
 
 LIBFT				=	libft
-LIBFT_A				=	$(LIBFT)/libft_ex.a
+LIBFT_SO			=	$(LIBFT)/libft_ex.so
 
 #			COMMON
 
@@ -39,7 +39,7 @@ INCLUDE 			=	-Iinclude/ -I$(LIBFT)/include/
 VPATH				=
 
 SRC_FILES			=	main			\
-						ininit			\
+						init			\
 
 SRC 				= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 				= 	$(addprefix $(BUILD_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -59,8 +59,9 @@ leaks				:
 check				:
 					$(CLANG-TIDY) $(SRC) $(CLANG-TIDY_CHECKS) -- $(INCLUDE)
 
-$(NAME)				:	$(BUILD_DIR) $(OBJ) $(LIBFT_A)
+$(NAME)				:	$(BUILD_DIR) $(OBJ) $(LIBFT_SO)
 					$(CC) $(LIBSFLAGS) -shared -o $(NAME) $(OBJ)
+					rm -f $(LNNAME)
 					ln -s $(NAME) $(LNNAME)
 
 $(BUILD_DIR)		:
@@ -71,8 +72,9 @@ $(BUILD_DIR)%.o		: 	$(SRC_DIR)%.c
 
 -include $(DEPS)
 
-$(LIBFT_A)			:	FORCE
+$(LIBFT_SO)			:	FORCE
 					$(MAKE) -C $(LIBFT)
+					cp $(LIBFT_SO) ./libft.so
 
 FORCE				:
 
@@ -82,6 +84,8 @@ clean				:
 
 fclean				:	clean
 					rm -f $(NAME)
+					rm -f $(LNNAME)
+					rm -f libft.so
 					$(MAKE) fclean -C $(LIBFT)
 
 re					:	fclean all

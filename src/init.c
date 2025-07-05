@@ -11,9 +11,10 @@ t_bool	init_malloc(t_context* ctx)
 		return (FALSE);
 	ctx->dataMax = rl.rlim_cur;
 
-	ctx->tinySize = ctx->pageSize;
-	while (ctx->tinySize < ZONE_MIN * BYTE)
-		ctx->tinySize += ctx->pageSize;
-	ctx->smallSize = ctx->tinySize * BYTE;
+	ctx->tinyZoneSize = ctx->pageSize;
+	while (ctx->tinyZoneSize < ZONE_MIN * BYTE)
+		ctx->tinyZoneSize += ctx->pageSize;
+	ctx->smallZoneSize = ctx->tinyZoneSize * BYTE;
+	ft_printf("Tinyzone = %zu tinySize = %zu\n smallzonesize = %zu smallsize = %zu\n", ctx->tinyZoneSize, ctx->tinyMax, ctx->smallZoneSize, ctx->smallMax);
 	return (TRUE);
 }

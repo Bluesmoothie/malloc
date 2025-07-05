@@ -5,7 +5,10 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+#include <stdio.h>
+
 #define	ZONE_MIN	100
+#define	BYTE		8
 
 typedef	unsigned char 	t_param;
 
@@ -23,20 +26,14 @@ typedef struct s_context
 	rlim_t		totalClaimed;
 	rlim_t		dataMax;
 	long		pageSize;
-	size_t		tinySize;
-	size_t		smallSize;
+	size_t		tinyZoneSize;
+	size_t		smallZoneSize;
+	size_t		tinyMax;
+	size_t		smallMax;
 	void*		tinyZones;
 	void*		smallZones;
 	void*		largeZones;
 }	t_context;
-
-enum	e_params
-{
-	FREE,
-	MALLOC,
-	REALLOC,
-	SHOW
-};
 
 //	main.c
 
