@@ -40,6 +40,9 @@ VPATH				=
 
 SRC_FILES			=	main			\
 						init			\
+						block			\
+						align			\
+						utils			\
 
 SRC 				= 	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ 				= 	$(addprefix $(BUILD_DIR), $(addsuffix .o, $(SRC_FILES)))
